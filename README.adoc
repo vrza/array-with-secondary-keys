@@ -1,6 +1,10 @@
 = Array with Secondary Keys
 
-Wraps a PHP array and maintains secondary indexes (similar to how secondary keys in an SQL database work).
+Wraps a PHP array and maintains secondary lookup maps, for fast retrieval of items by nested field values.
+
+This is conceptually similar to how secondary keys in databases work.
+
+Implemented in pure PHP. Secondary indexes are implemented as PHP associative arrays -- hash tables with O(1) average lookup time.
 
 == API Reference
 
@@ -9,27 +13,31 @@ A "document" is the value associated to a primary key. It can be of any type. If
 All created secondary key indexes are automatically updated when adding/removing/updating values.
 
 === Constructor
-```
-__construct(array $array = [])
-```
-Creates a new `ArrayWithSecondaryKeys` collection, initialized from the given array. If called without arguments, an empty array is created.
+[source,php]
+----
+ArrayWithSecondaryKeys(array $array = [])
+----
+Creates a new `ArrayWithSecondaryKeys` collection, initialized from the given array. If called without arguments, an empty collection is created.
 
 === count
-```
+[source,php]
+----
 count(): int
-```
+----
 Returns the number of documents in the collection.
 
 === isEmpty
-```
+[source,php]
+----
 isEmpty(): bool
-```
+----
 Returns `true` if there are no primary keys in the collection, `false` otherwise.
 
 === put
-```
+[source,php]
+----
 put($key, $document)
-```
+----
 Adds a new document to the collection under the given key.
 
 If the key is given in "dot" notation, and the top level primary key exists, a nested part is added to the existing document.
@@ -37,43 +45,51 @@ If the key is given in "dot" notation, and the top level primary key exists, a n
 If the key is not a string that includes a dot, it is treated as a primary key.
 
 === get
-```
+[source,php]
+----
 get($key, $default = null): mixed
-```
+----
 Retrieves a document by key.
 
 If the key is given in "dot" notation, the corresponding nested part of the document is returned. If the key is not a string that includes a dot, it is treated as a primary key.
 
 === remove
-```
+[source,php]
+----
 remove($key)
-```
+----
 Removes the document associated with the given primary key, or removes a nested part of the document if key is given in "dot" notation.
 
 If the key is given in "dot" notation, the corresponding nested part of the document is removed. If the key is not a string that includes a dot, it is treated as a primary key.
 
 === append
-```
+[source,php]
+----
 append($document)
-```
+----
 Appends a document (using `[]=`).
 
 === createIndex
-```
+[source,php]
+----
 createIndex($index)
-```
+----
 Creates and new index and indexes existing document. Index is given as string in "dot" notation (e.g. `state.pid`).
 
 === getByIndex
-```
+[source,php]
+----
 getByIndex($index, $secondaryKey, $default = null): mixed
-```
-Retrieves a document by index (secondary key). Index is given as string in "dot" notation (e.g. `state.pid`). Throws `VladimirVrzic\ArrayWithSecondaryKeys\NoSuchIndexException` if index is not present.
+----
+Retrieves a document by index (secondary key). Index is given as string in "dot" notation (e.g. `state.pid`).
+
+Throws `VladimirVrzic\ArrayWithSecondaryKeys\NoSuchIndexException` if the given index does not exist.
 
 === updateByIndex
-```
+[source,php]
+----
 updateByIndex($index, $secondaryKey, $document)
-```
+----
 Updates a document by index (secondary key). Index is given as string in "dot" notation (e.g. `state.pid`).
 
 Throws `VladimirVrzic\ArrayWithSecondaryKeys\NoSuchIndexException` if the given index does not exist.
@@ -81,9 +97,10 @@ Throws `VladimirVrzic\ArrayWithSecondaryKeys\NoSuchIndexException` if the given 
 Returns `true` if the existing document associated with the given secondary key was found and replaced. Returns `false` if the document associated with the given secondary key was not found.
 
 === removeByIndex
-```
+[source,php]
+----
 removeByIndex($index, $secondaryKey)
-```
+----
 Removes a document by index (secondary key).  Index is given as string in "dot" notation (e.g. `state.pid`).
 
 Throws `VladimirVrzic\ArrayWithSecondaryKeys\NoSuchIndexException` if the given index does not exist.
@@ -91,29 +108,33 @@ Throws `VladimirVrzic\ArrayWithSecondaryKeys\NoSuchIndexException` if the given 
 Returns `true` if the document associated with the given secondary key was found and removed. Returns `false` if a document associated with the given secondary key was not found.
 
 === putIfAbsent
-```
+[source,php]
+----
 putIfAbsent($key, $document): mixed
-```
-If the key doesn't exist, puts the new document into the array and returns `null`.
+----
+If the key doesn't exist, adds the new key associated with the given document and returns `null`.
 
-If the key exists, returns the existing document associated with it.
+If the key exists, returns the current document.
 
 === asArray
-```
+[source,php]
+----
 asArray(): array
-```
+----
 Returns a copy of the array as a normal PHP array (without secondary indexes).
 
 === primaryKeys
-```
+[source,php]
+----
 primaryKeys(): array
-```
+----
 Returns an array of all primary keys.
 
 === secondaryKeys
-```
+[source,php]
+----
 secondaryKeys($index): array
-```
+----
 Returns an array of all secondary keys associated with the given index.
 
 == Name ideas
