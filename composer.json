@@ -1,0 +1,24 @@
+{
+    "name": "vrza/array-with-secondary-keys",
+    "description": "Array with Secondary Indexes",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Vladimir Vrzić",
+            "email": "vvrzic@gmail.com"
+        }
+    ],
+    "require": {
+        "php": "^7.1 || ^8.0"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^8"
+    },
+    "autoload": {
+        "psr-4": {
+            "VladimirVrzic\\ArrayWithSecondaryKeys\\": "src/"
+        }
+    }
+
+}
