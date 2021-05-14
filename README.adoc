@@ -111,6 +111,17 @@ createIndex($index)
 ----
 Creates and new index and indexes existing document. Index is given as string in "dot" notation (e.g. `state.pid`).
 
+=== getPrimaryKeyByIndex
+[source,php]
+----
+getPrimaryKeyByIndex($index, $secondaryKey): mixed
+----
+Retrieves a primary key by secondary key. Index is given as string in "dot" notation (e.g. `state.pid`).
+
+Returns `null` if no document in collection matches the given secondary key.
+
+Throws `VladimirVrzic\ArrayWithSecondaryKeys\NoSuchIndexException` if the given index does not exist.
+
 === getByIndex
 [source,php]
 ----
