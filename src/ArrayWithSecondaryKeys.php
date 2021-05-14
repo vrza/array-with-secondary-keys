@@ -37,7 +37,7 @@ class ArrayWithSecondaryKeys implements Countable
         $this->p[] = $document;
         // $primaryKey = array_key_last($this->p); // PHP >= 7.3
         $primaryKey = array_keys($this->p)[count($this->p) - 1];
-        $this->updateAllIndexes($primaryKey, $document);
+        $this->addNewDocumentToAllIndexes($primaryKey, $document);
     }
 
     public function put($key, $document)
@@ -138,6 +138,20 @@ class ArrayWithSecondaryKeys implements Countable
         }
     }
 
+    public function updateSecondaryKey($index, $existingValue, $newValue) {
+        if (!array_key_exists($index, $this->s)) {
+            throw new NoSuchIndexException("Index $index not present");
+        }
+        $primaryKey = ArrUtils::get($this->s[$index], $existingValue, null);
+        if (!is_null($primaryKey)) {
+            $document = $this->p[$primaryKey];
+            ArrUtils::set($document, $index, $newValue);
+            $this->p[$primaryKey] = $document;
+            $this->updateSecondaryIndexValue($index, $primaryKey, $existingValue, $newValue);
+        }
+        return $primaryKey;
+    }
+
     public function putIfAbsent($key, $document)
     {
         $existing = ArrUtils::get($this->p, $key);
@@ -174,11 +188,11 @@ class ArrayWithSecondaryKeys implements Countable
         }
         $this->s[$index] = [];
         foreach ($this->p as $primaryKey => $document) {
-            $this->updateIndex($index, $primaryKey, $document);
+            $this->addNewDocumentToIndex($index, $primaryKey, $document);
         }
     }
 
-    private function updateIndex($index, $primaryKey, $document)
+    private function addNewDocumentToIndex($index, $primaryKey, $document)
     {
         $secondaryKey = ArrUtils::get($document, $index, null);
         if (!is_null($secondaryKey)) {
@@ -186,10 +200,10 @@ class ArrayWithSecondaryKeys implements Countable
         }
     }
 
-    private function updateAllIndexes($primaryKey, $document)
+    private function addNewDocumentToAllIndexes($primaryKey, $document)
     {
         foreach (array_keys($this->s) as $index) {
-            $this->updateIndex($index, $primaryKey, $document);
+            $this->addNewDocumentToIndex($index, $primaryKey, $document);
         }
     }
 
@@ -207,12 +221,16 @@ class ArrayWithSecondaryKeys implements Countable
         foreach (array_keys($this->s) as $index) {
             $prevValue = $prevSecondaryValues[$index];
             $newValue = ArrUtils::get($document, $index);
-            if ($prevValue != $newValue) {
-                if (is_null($newValue)) {
-                    unset($this->s[$index][$prevValue]);
-                } else {
-                    $this->s[$index][$newValue] = $primaryKey;
-                }
+            $this->updateSecondaryIndexValue($index, $primaryKey, $prevValue, $newValue);
+        }
+    }
+
+    private function updateSecondaryIndexValue($index, $primaryKey, $prevValue, $newValue) {
+        if ($prevValue != $newValue) {
+            if (is_null($newValue)) {
+                unset($this->s[$index][$prevValue]);
+            } else {
+                $this->s[$index][$newValue] = $primaryKey;
             }
         }
     }
