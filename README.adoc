@@ -19,12 +19,43 @@ ArrayWithSecondaryKeys(array $array = [])
 ----
 Creates a new `ArrayWithSecondaryKeys` collection, initialized from the given array. If called without arguments, an empty collection is created.
 
+== containsPrimaryKey
+[source,php]
+----
+containsPrimaryKey($key): bool
+----
+Checks if the specified primary key is present in the collection.
+
+== containsSecondaryKey
+[source,php]
+----
+containsSecondaryKey($index, $key): bool
+----
+Checks if the specified secondary key is present in the specified index.
+
 === count
 [source,php]
 ----
 count(): int
 ----
 Returns the number of documents in the collection.
+
+=== get
+[source,php]
+----
+get($key, $default = null): mixed
+----
+Retrieves a document by key.
+
+If the key is given in "dot" notation, the corresponding nested part of the document is returned. If the key is not a string that includes a dot, it is treated as a primary key.
+
+=== has
+[source,php]
+----
+has($key): bool
+----
+Check if an item or items exist in the collection using "dot" notation.
+
 
 === isEmpty
 [source,php]
@@ -43,15 +74,6 @@ Adds a new document to the collection under the given key.
 If the key is given in "dot" notation, and the top level primary key exists, a nested part is added to the existing document.
 
 If the key is not a string that includes a dot, it is treated as a primary key.
-
-=== get
-[source,php]
-----
-get($key, $default = null): mixed
-----
-Retrieves a document by key.
-
-If the key is given in "dot" notation, the corresponding nested part of the document is returned. If the key is not a string that includes a dot, it is treated as a primary key.
 
 === remove
 [source,php]
@@ -153,6 +175,10 @@ Add the following to your `composer.json`:
         "vrza/array-with-secondary-keys": "dev-main"
     }
 ----
+
+== TODO
+
+- Implement the Iterator interface
 
 == Name ideas
 

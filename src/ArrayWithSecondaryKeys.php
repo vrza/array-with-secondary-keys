@@ -64,6 +64,11 @@ class ArrayWithSecondaryKeys implements Countable
         return ArrUtils::get($this->p, $key, $default);
     }
 
+    public function has($keys): bool
+    {
+        return ArrUtils::has($this->p, $keys);
+    }
+
     public function remove($key)
     {
         if (is_null($key)) {
@@ -81,6 +86,17 @@ class ArrayWithSecondaryKeys implements Countable
         }
 
         $this->updateAllSecondaryIndexValues($primaryKey, $prevSecondaryValues);
+    }
+
+    public function containsPrimaryKey($primaryKey): bool {
+        return array_key_exists($primaryKey, $this->p);
+    }
+
+    public function containsSecondaryKey($index, $secondaryKey): bool {
+        if (!array_key_exists($index, $this->s)) {
+            throw new NoSuchIndexException("Index $index not present");
+        }
+        return array_key_exists($secondaryKey, $this->s[$index]);
     }
 
     public function getByIndex($index, $secondaryKey, $default = null)
