@@ -3,8 +3,9 @@
 namespace VladimirVrzic\ArrayWithSecondaryKeys;
 
 use Countable;
+use Iterator;
 
-class ArrayWithSecondaryKeys implements Countable
+class ArrayWithSecondaryKeys implements Countable, Iterator
 {
     // primary map
     private $p;
@@ -16,15 +17,37 @@ class ArrayWithSecondaryKeys implements Countable
         $this->p = $array;
     }
 
+    // Iterator interface
+    public function rewind() {
+        return reset($this->p);
+    }
+
+    public function current() {
+        return current($this->p);
+    }
+
+    public function key() {
+        return key($this->p);
+    }
+
+    public function next() {
+        return next($this->p);
+    }
+
+    public function valid(): bool {
+        return key($this->p) !== null;
+    }
+
+    // Countable interface
+    public function count(): int
+    {
+        return count($this->p);
+    }
+
     public function dump()
     {
         var_dump($this->p);
         var_dump($this->s);
-    }
-
-    public function count(): int
-    {
-        return count($this->p);
     }
 
     public function isEmpty(): bool
@@ -88,23 +111,31 @@ class ArrayWithSecondaryKeys implements Countable
         $this->updateAllSecondaryIndexValues($primaryKey, $prevSecondaryValues);
     }
 
-    public function containsPrimaryKey($primaryKey): bool {
+    public function containsPrimaryKey($primaryKey): bool
+    {
         return array_key_exists($primaryKey, $this->p);
     }
 
-    public function containsSecondaryKey($index, $secondaryKey): bool {
+    public function containsSecondaryKey($index, $secondaryKey): bool
+    {
         if (!array_key_exists($index, $this->s)) {
             throw new NoSuchIndexException("Index $index not present");
         }
         return array_key_exists($secondaryKey, $this->s[$index]);
     }
 
-    public function getByIndex($index, $secondaryKey, $default = null)
+    public function getPrimaryKeyByIndex($index, $secondaryKey)
     {
         if (!array_key_exists($index, $this->s)) {
             throw new NoSuchIndexException("Index $index not present");
         }
         $primaryKey = ArrUtils::get($this->s[$index], $secondaryKey, null);
+        return $primaryKey;
+    }
+
+    public function getByIndex($index, $secondaryKey, $default = null)
+    {
+        $primaryKey = $this->getPrimaryKeyByIndex($index, $secondaryKey);
         return (
         is_null($primaryKey)
             ? $default
@@ -112,11 +143,9 @@ class ArrayWithSecondaryKeys implements Countable
         );
     }
 
-    public function updateByIndex($index, $secondaryKey, $document) {
-        if (!array_key_exists($index, $this->s)) {
-            throw new NoSuchIndexException("Index $index not present");
-        }
-        $primaryKey = ArrUtils::get($this->s[$index], $secondaryKey, null);
+    public function updateByIndex($index, $secondaryKey, $document)
+    {
+        $primaryKey = $this->getPrimaryKeyByIndex($index, $secondaryKey);
         if (!is_null($primaryKey)) {
             $this->p[$primaryKey] = $document;
             return true;
@@ -125,11 +154,9 @@ class ArrayWithSecondaryKeys implements Countable
         }
     }
 
-    public function removeByIndex($index, $secondaryKey) {
-        if (!array_key_exists($index, $this->s)) {
-            throw new NoSuchIndexException("Index $index not present");
-        }
-        $primaryKey = ArrUtils::get($this->s[$index], $secondaryKey, null);
+    public function removeByIndex($index, $secondaryKey)
+    {
+        $primaryKey = $this->getPrimaryKeyByIndex($index, $secondaryKey);
         if (!is_null($primaryKey)) {
             unset($this->p[$primaryKey]);
             return true;
@@ -138,11 +165,9 @@ class ArrayWithSecondaryKeys implements Countable
         }
     }
 
-    public function updateSecondaryKey($index, $existingValue, $newValue) {
-        if (!array_key_exists($index, $this->s)) {
-            throw new NoSuchIndexException("Index $index not present");
-        }
-        $primaryKey = ArrUtils::get($this->s[$index], $existingValue, null);
+    public function updateSecondaryKey($index, $existingValue, $newValue)
+    {
+        $primaryKey = $this->getPrimaryKeyByIndex($index, $existingValue);
         if (!is_null($primaryKey)) {
             $document = $this->p[$primaryKey];
             ArrUtils::set($document, $index, $newValue);

@@ -4,6 +4,10 @@ Wraps a PHP array and maintains secondary lookup maps, for fast retrieval of ite
 
 This is conceptually similar to how secondary keys in databases work.
 
+== Features
+
+Implements `Iterator` and `Countable` interfaces, so you can use `foreach`, `count`, etc. like on a normal PHP array.
+
 Implemented in pure PHP. Secondary indexes are implemented as PHP associative arrays -- hash tables with O(1) average lookup time.
 
 == API Reference
