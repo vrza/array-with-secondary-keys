@@ -137,6 +137,23 @@ secondaryKeys($index): array
 ----
 Returns an array of all secondary keys associated with the given index.
 
+== Setup
+
+Add the following to your `composer.json`:
+
+[source,php]
+----
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/vrza/array-with-secondary-keys"
+         }
+    ],
+    "require": {
+        "vrza/array-with-secondary-keys": "dev-main"
+    }
+----
+
 == Name ideas
 
 - <[associative] array | map | dictionary> with secondary keys
