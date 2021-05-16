@@ -111,7 +111,7 @@ Appends a document (using `[]=`).
 ----
 createIndex($index)
 ----
-Creates and new index and indexes existing document. Index is given as string in "dot" notation (e.g. `state.pid`).
+Creates a new index and indexes existing documents. Index is given as string in "dot" notation (e.g. `state.pid`).
 
 === getPrimaryKeyByIndex
 [source,php]
