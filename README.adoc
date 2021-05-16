@@ -1,6 +1,6 @@
 = Array with Secondary Keys
 
-image:https://github.com/vrza/array-with-secondary-keys/actions/workflows/unit-tests.yml/badge.svg[Build Status (GitHub Actions),link=https://github.com/vrza/array-with-secondary-keys/actions]
+image:https://github.com/vrza/array-with-secondary-keys/actions/workflows/ci.yml/badge.svg[Build Status (GitHub Actions),link=https://github.com/vrza/array-with-secondary-keys/actions]
 
 Wraps a PHP array and maintains secondary lookup maps, for fast retrieval of items by nested field values.
 
