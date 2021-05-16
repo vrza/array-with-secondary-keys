@@ -202,10 +202,6 @@ Add the following to your `composer.json`:
     }
 ----
 
-== TODO
-
-- Implement the Iterator interface
-
 == Name ideas
 
 - <[associative] array | map | dictionary> with secondary keys
