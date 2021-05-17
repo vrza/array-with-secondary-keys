@@ -43,7 +43,6 @@ final class ArrUtilsTest extends TestCase
                 ]
         ];
         ArrUtils::set($a, '22.foo.bar', 'baz');
-        var_dump($a);
         ArrUtils::forget($a, "22.foo.bar.bogus");
         $this->assertEquals("baz", ArrUtils::get($a, "22.foo.bar"));
     }

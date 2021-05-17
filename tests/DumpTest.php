@@ -21,8 +21,7 @@ final class DumpTest extends TestCase
         ob_start();
         $a->dump();
         $dump = ob_get_clean();
-        $this->assertEquals(
-            198,
+        $this->assertIsInt(
             strpos($dump, '[12345]')
         );
     }
