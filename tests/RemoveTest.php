@@ -20,6 +20,8 @@ final class RemoveTest extends TestCase
             ]
         );
         $a->createIndex('state.pid');
+        // non-existing key removal is a no-op
+        $a->remove('23.state.pid');
         $a->remove('22.state.pid');
         $this->assertFalse(
             $a->has('22.state.pid')
@@ -45,6 +47,8 @@ final class RemoveTest extends TestCase
             ]
         );
         $a->createIndex('state.pid');
+        // non-existing key removal is a no-op
+        $a->removeByIndex('state.pid', $pid + 1);
         $a->removeByIndex('state.pid', $pid);
         $this->assertTrue($a->isEmpty());
     }
