@@ -28,6 +28,7 @@ final class UpdateTest extends TestCase
             12345,
             $secondaryKeys[0]
         );
+        $a->updateSecondaryKey('state.pid', null, 13579);
         $a->updateSecondaryKey('state.pid', 12345, 13579);
         $this->assertEquals(
             13579,
