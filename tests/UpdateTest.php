@@ -4,7 +4,7 @@ use PHPUnit\Framework\TestCase;
 use VladimirVrzic\ArrayWithSecondaryKeys\ArrayWithSecondaryKeys;
 use VladimirVrzic\ArrayWithSecondaryKeys\NoSuchIndexException;
 
-final class UpdateSecondaryKeyTest extends TestCase
+final class UpdateTest extends TestCase
 {
     public function testUpdateSecondaryKey(): void
     {
