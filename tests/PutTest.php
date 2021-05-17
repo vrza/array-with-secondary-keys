@@ -3,7 +3,7 @@
 use PHPUnit\Framework\TestCase;
 use VladimirVrzic\ArrayWithSecondaryKeys\ArrayWithSecondaryKeys;
 
-class PutIfAbsentTest extends TestCase
+class PutTest extends TestCase
 {
     public function testPutIfAbsent(): void
     {
@@ -40,5 +40,12 @@ class PutIfAbsentTest extends TestCase
         } catch (NoSuchIndexException $e) {
             $this->fail();
         }
+    }
+
+    public function testPutNull(): void
+    {
+        $a = new ArrayWithSecondaryKeys();
+        $a->put(null, ['k' => 'v']);
+        $this->assertTrue($a->isEmpty());
     }
 }
