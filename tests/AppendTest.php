@@ -21,6 +21,10 @@ class AppendTest extends TestCase
                 'email' => 'mika@frg.ex'
             ]
         );
+        $primaryKeys = $a->primaryKeys();
+        $this->assertEquals(2, count($primaryKeys));
+        $this->assertEquals('pera', $primaryKeys[0]);
+        $this->assertEquals(0, $primaryKeys[1]);
         try {
             $this->assertEquals(
                 'Mika',
