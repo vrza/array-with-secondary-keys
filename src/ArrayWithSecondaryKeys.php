@@ -94,7 +94,7 @@ class ArrayWithSecondaryKeys implements Countable, Iterator
 
     public function remove($key)
     {
-        if (is_null($key)) {
+        if (!$this->has($key)) {
             return;
         }
 
