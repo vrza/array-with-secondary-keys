@@ -89,4 +89,20 @@ final class RemoveTest extends TestCase
             $this->fail("No such index: state.pid");
         }
     }
+
+    public function testRemoveNumericKey(): void
+    {
+        $a = new ArrayWithSecondaryKeys(
+            ['apple', 'pear', 'quince']
+        );
+        $a->remove(1);
+        $this->assertEquals(
+            2,
+            count($a)
+        );
+        $this->assertEquals(
+            'quince',
+            $a->asArray()[2]
+        );
+    }
 }
