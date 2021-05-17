@@ -10,6 +10,17 @@ class ArrUtils
 {
 
     /**
+     * Return true if the argument is of integer or string tyoe
+     *
+     * @param mixed $x
+     * @return bool
+     */
+    public static function isValidArrayKey($x)
+    {
+        return is_int($x) || is_string($x);
+    }
+
+    /**
      * Get an item from an array using "dot" notation.
      *
      * @param array $array
@@ -90,7 +101,7 @@ class ArrUtils
      * @param mixed $value
      * @return array
      */
-    public static function set(&$array, $key, $value): array
+    public static function set(&$array, $key, $value)
     {
         if (is_null($key)) {
             return $array = $value;
