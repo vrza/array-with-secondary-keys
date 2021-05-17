@@ -129,7 +129,7 @@ class ArrayWithSecondaryKeys implements Countable, Iterator
         if (!array_key_exists($index, $this->s)) {
             throw new NoSuchIndexException("Index $index not present");
         }
-        $primaryKey = ArrUtils::get($this->s[$index], $secondaryKey, null);
+        $primaryKey = ArrUtils::get($this->s[$index], $secondaryKey);
         return ArrUtils::isValidArrayKey($primaryKey) ? $primaryKey : null;
     }
 
@@ -141,7 +141,7 @@ class ArrayWithSecondaryKeys implements Countable, Iterator
             : $default;
     }
 
-    public function updateByIndex($index, $secondaryKey, $document)
+    public function updateByIndex($index, $secondaryKey, $document): bool
     {
         $primaryKey = $this->getPrimaryKeyByIndex($index, $secondaryKey);
         if (ArrUtils::isValidArrayKey($primaryKey)) {
@@ -152,7 +152,7 @@ class ArrayWithSecondaryKeys implements Countable, Iterator
         }
     }
 
-    public function removeByIndex($index, $secondaryKey)
+    public function removeByIndex($index, $secondaryKey): bool
     {
         $primaryKey = $this->getPrimaryKeyByIndex($index, $secondaryKey);
         if (ArrUtils::isValidArrayKey($primaryKey)) {
@@ -217,8 +217,8 @@ class ArrayWithSecondaryKeys implements Countable, Iterator
 
     private function addNewDocumentToIndex($index, $primaryKey, $document)
     {
-        $secondaryKey = ArrUtils::get($document, $index, null);
-        if (!is_null($secondaryKey)) {
+        $secondaryKey = ArrUtils::get($document, $index);
+        if (ArrUtils::isValidArrayKey($secondaryKey)) {
             $this->s[$index][$secondaryKey] = $primaryKey;
         }
     }

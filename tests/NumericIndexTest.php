@@ -2,6 +2,7 @@
 
 use PHPUnit\Framework\TestCase;
 use VladimirVrzic\ArrayWithSecondaryKeys\ArrayWithSecondaryKeys;
+use VladimirVrzic\ArrayWithSecondaryKeys\NoSuchIndexException;
 
 class NumericIndexTest extends TestCase
 {
@@ -17,19 +18,20 @@ class NumericIndexTest extends TestCase
                 'email' => 'mika@frg.ex'
             ]
         ];
+        $index = 'email';
         $a = new ArrayWithSecondaryKeys($initialArray);
-        $a->createIndex('email');
+        $a->createIndex($index);
+        $this->assertEquals(
+            'mika@frg.ex',
+            $a->get('1.email')
+        );
         try {
             $this->assertEquals(
-                'mika@frg.ex',
-                $a->get('1.email')
-            );
-            $this->assertEquals(
                 'Mika',
-                $a->getByIndex('email', 'mika@frg.ex')['name']
+                $a->getByIndex($index, 'mika@frg.ex')['name']
             );
         } catch (NoSuchIndexException $e) {
-            $this->fail();
+            $this->fail("No such index: $index");
         }
     }
 }

@@ -15,31 +15,25 @@ class PutTest extends TestCase
         ];
         $a = new ArrayWithSecondaryKeys($initialArray);
         $a->createIndex('email');
-        try {
-            $new = $a->putIfAbsent(
-                'mika',
-                [
-                    'name' => 'Mika',
-                    'email' => 'mika@frg.ex'
-                ]
-            );
-            $this->assertNull(
-                $new
-            );
-            $existing = $a->putIfAbsent(
-                'pera',
-                [
-                    'name' => 'Petar',
-                    'email' => 'petar@ddr.ex'
-                ]
-            );
-            $this->assertEquals(
-                'Pera',
-                $existing['name']
-            );
-        } catch (NoSuchIndexException $e) {
-            $this->fail();
-        }
+        $new = $a->putIfAbsent(
+            'mika',
+            [
+                'name' => 'Mika',
+                'email' => 'mika@frg.ex'
+            ]
+        );
+        $this->assertNull($new);
+        $existing = $a->putIfAbsent(
+            'pera',
+            [
+                'name' => 'Petar',
+                'email' => 'petar@ddr.ex'
+            ]
+        );
+        $this->assertEquals(
+            'Pera',
+            $existing['name']
+        );
     }
 
     public function testPutNull(): void

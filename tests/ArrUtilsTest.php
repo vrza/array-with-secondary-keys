@@ -11,7 +11,7 @@ final class ArrUtilsTest extends TestCase
             22 => 42
         ];
         ArrUtils::set($a, null, 'foo');
-        $this->assertEquals($a, 'foo');
+        $this->assertEquals('foo', $a);
     }
 
     public function testForget(): void
@@ -26,9 +26,9 @@ final class ArrUtilsTest extends TestCase
                 ]
         ];
         ArrUtils::forget($a, []);
-        $this->assertEquals($a[22]['name'], 'twenty-two');
+        $this->assertEquals('twenty-two', $a[22]['name']);
         ArrUtils::forget($a, 22);
-        $this->assertEquals(0, count($a));
+        $this->assertCount(0, $a);
     }
 
     public function testForgetDotNotation(): void

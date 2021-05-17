@@ -15,7 +15,7 @@ class ArrUtils
      * @param mixed $x
      * @return bool
      */
-    public static function isValidArrayKey($x)
+    public static function isValidArrayKey($x): bool
     {
         return is_int($x) || is_string($x);
     }
@@ -64,7 +64,7 @@ class ArrUtils
      * @param string|array $keys
      * @return bool
      */
-    public static function has($array, $keys)
+    public static function has($array, $keys): bool
     {
         $keys = (array)$keys;
 

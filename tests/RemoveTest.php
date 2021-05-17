@@ -66,7 +66,8 @@ final class RemoveTest extends TestCase
                 ]
             ]
         );
-        $a->createIndex('state.pid');
+        $index = 'state.pid';
+        $a->createIndex($index);
         $this->assertEquals(
             $pid,
             $a->get('22.state.pid')
@@ -74,10 +75,10 @@ final class RemoveTest extends TestCase
         try {
             $this->assertEquals(
                 'twenty-two',
-                $a->getByIndex('state.pid', $pid)['name']
+                $a->getByIndex($index, $pid)['name']
             );
         } catch (NoSuchIndexException $e) {
-            $this->fail("No such index: state.pid");
+            $this->fail("No such index: $index");
         }
         $a->put('22.state.pid', null);
         $this->assertEquals(
@@ -87,10 +88,10 @@ final class RemoveTest extends TestCase
         try {
             $this->assertEquals(
                 null,
-                $a->getByIndex('state.pid', $pid)
+                $a->getByIndex($index, $pid)
             );
         } catch (NoSuchIndexException $e) {
-            $this->fail("No such index: state.pid");
+            $this->fail("No such index: $index");
         }
     }
 
@@ -100,10 +101,7 @@ final class RemoveTest extends TestCase
             ['apple', 'pear', 'quince']
         );
         $a->remove(1);
-        $this->assertEquals(
-            2,
-            count($a)
-        );
+        $this->assertCount(2, $a);
         $this->assertEquals(
             'quince',
             $a->asArray()[2]
