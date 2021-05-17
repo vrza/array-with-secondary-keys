@@ -10,7 +10,7 @@ class ArrUtils
 {
 
     /**
-     * Return true if the argument is of integer or string tyoe
+     * Return true if the argument is of integer or string type
      *
      * @param mixed $x
      * @return bool
