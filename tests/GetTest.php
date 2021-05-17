@@ -72,4 +72,29 @@ final class GetTest extends TestCase
             $this->fail("No such index: state.pid");
         }
     }
+
+    public function testIdempotentCreateIndex(): void
+    {
+        $pid = 12345;
+        $a = new ArrayWithSecondaryKeys();
+        $a->createIndex('state.pid');
+        $a->put(
+            22,
+            [
+                'name' => 'twenty-two',
+                'state' => [
+                    'pid' => $pid
+                ]
+            ]
+        );
+        $a->createIndex('state.pid');
+        try {
+            $this->assertEquals(
+                'twenty-two',
+                $a->getByIndex('state.pid', $pid)['name']
+            );
+        } catch (NoSuchIndexException $e) {
+            $this->fail("No such index: state.pid");
+        }
+    }
 }
