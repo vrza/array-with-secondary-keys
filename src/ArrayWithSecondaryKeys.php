@@ -3,6 +3,7 @@
 namespace VladimirVrzic\ArrayWithSecondaryKeys;
 
 use Countable;
+use InvalidArgumentException;
 use Iterator;
 
 class ArrayWithSecondaryKeys implements Countable, Iterator
@@ -65,8 +66,9 @@ class ArrayWithSecondaryKeys implements Countable, Iterator
 
     public function put($key, $document)
     {
-        if (is_null($key)) {
-            return;
+        if (!ArrUtils::isValidArrayKey($key)) {
+            $type = gettype($key);
+            throw new InvalidArgumentException("Array key cannot be $type, allowed types are string or integer");
         }
 
         $primaryKey = is_string($key) ? explode('.', $key)[0] : $key;
@@ -94,6 +96,11 @@ class ArrayWithSecondaryKeys implements Countable, Iterator
 
     public function remove($key)
     {
+        if (!ArrUtils::isValidArrayKey($key)) {
+            $type = gettype($key);
+            throw new InvalidArgumentException("Array key cannot be $type, allowed types are string or integer");
+        }
+
         if (!$this->has($key)) {
             return;
         }
@@ -177,6 +184,11 @@ class ArrayWithSecondaryKeys implements Countable, Iterator
 
     public function putIfAbsent($key, $document)
     {
+        if (!ArrUtils::isValidArrayKey($key)) {
+            $type = gettype($key);
+            throw new InvalidArgumentException("Array key cannot be $type, allowed types are string or integer");
+        }
+
         $existing = ArrUtils::get($this->p, $key);
         if (is_null($existing)) {
             $this->put($key, $document);

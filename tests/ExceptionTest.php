@@ -59,4 +59,39 @@ final class ExceptionTest extends TestCase
         $this->expectException(NoSuchIndexException::class);
         $a->containsSecondaryKey('state.foobar', $pid);
     }
+
+    public function testPutNullKeyInvalidArgumentException(): void
+    {
+        $a = new ArrayWithSecondaryKeys();
+        $this->expectException(InvalidArgumentException::class);
+        $a->put(null, ['k' => 'v']);
+    }
+
+    public function testPutArrayAsKeyInvalidArgumentException(): void
+    {
+        $a = new ArrayWithSecondaryKeys();
+        $this->expectException(InvalidArgumentException::class);
+        $a->put(['k' => 'v'], 'document');
+    }
+
+    public function testRemoveNullKeyInvalidArgumentException(): void
+    {
+        $a = new ArrayWithSecondaryKeys();
+        $this->expectException(InvalidArgumentException::class);
+        $a->remove(null);
+    }
+
+    public function testRemoveArrayAsKeyInvalidArgumentException(): void
+    {
+        $a = new ArrayWithSecondaryKeys();
+        $this->expectException(InvalidArgumentException::class);
+        $a->remove([1, 2, 3]);
+    }
+
+    public function testPutIfAbsentNulllKeyInvalidArgumentException(): void
+    {
+        $a = new ArrayWithSecondaryKeys();
+        $this->expectException(InvalidArgumentException::class);
+        $a->putIfAbsent(null, ['k' => 'v']);
+    }
 }

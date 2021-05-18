@@ -36,10 +36,4 @@ class PutTest extends TestCase
         );
     }
 
-    public function testPutNull(): void
-    {
-        $a = new ArrayWithSecondaryKeys();
-        $a->put(null, ['k' => 'v']);
-        $this->assertTrue($a->isEmpty());
-    }
 }
