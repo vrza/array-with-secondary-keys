@@ -2,11 +2,12 @@
 
 namespace VladimirVrzic\ArrayWithSecondaryKeys;
 
+use ArrayAccess;
 use Countable;
 use InvalidArgumentException;
 use Iterator;
 
-class ArrayWithSecondaryKeys implements Countable, Iterator
+class ArrayWithSecondaryKeys implements ArrayAccess, Countable, Iterator
 {
     // primary map
     private $p;
@@ -16,6 +17,56 @@ class ArrayWithSecondaryKeys implements Countable, Iterator
     public function __construct(array $array = [])
     {
         $this->p = $array;
+    }
+
+    // ArrayAccess interface
+    public function offsetSet($offset, $value)
+    {
+        if (is_null($offset)) {
+            return $this->append($value);
+        } else {
+            if (!ArrUtils::isValidArrayKey($offset)) {
+                $type = gettype($offset);
+                throw new InvalidArgumentException("Offset cannot be $type, allowed types are string or integer");
+            }
+
+            $prevSecondaryValues = $this->getAllSecondaryIndexValues($offset);
+            $this->p[$offset] = $value;
+            $this->updateAllSecondaryIndexValues($offset, $prevSecondaryValues);
+        }
+    }
+
+    public function offsetExists($offset): bool
+    {
+        return isset($this->p[$offset]);
+    }
+
+    public function offsetUnset($offset)
+    {
+        if (is_null($offset)) {
+            return;
+        }
+        if (!ArrUtils::isValidArrayKey($offset)) {
+            $type = gettype($offset);
+            throw new InvalidArgumentException("Offset cannot be $type, allowed types are string or integer");
+        }
+
+        $prevSecondaryValues = $this->getAllSecondaryIndexValues($offset);
+        unset($this->p[$offset]);
+        $this->updateAllSecondaryIndexValues($offset, $prevSecondaryValues);
+    }
+
+    public function offsetGet($offset)
+    {
+        if (is_null($offset)) {
+            return null;
+        }
+        if (!ArrUtils::isValidArrayKey($offset)) {
+            $type = gettype($offset);
+            throw new InvalidArgumentException("Offset cannot be $type, allowed types are string or integer");
+        }
+
+        return $this->p[$offset] ?? null;
     }
 
     // Iterator interface
