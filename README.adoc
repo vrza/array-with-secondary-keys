@@ -8,7 +8,7 @@ This is conceptually similar to how secondary keys in databases work.
 
 == Features
 
-Implements `ArrayAccess` `Iterator` and `Countable` interfaces, so you can use it like you would a standard PHP array:
+Implements `ArrayAccess`, `Iterator` and `Countable` interfaces, so you can use it like you would a standard PHP array:
 
 [source,php]
 ----
