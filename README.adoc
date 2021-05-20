@@ -8,7 +8,16 @@ This is conceptually similar to how secondary keys in databases work.
 
 == Features
 
-Implements `Iterator` and `Countable` interfaces, so you can use `foreach`, `count`, etc. like on a normal PHP array.
+Implements `ArrayAccess` `Iterator` and `Countable` interfaces, so you can use it like you would a standard PHP array:
+
+[source,php]
+----
+$a[] = ['foo' => 'bar'];
+$value = $a[0];
+unset($a[0]);
+count($a);
+foreach ($a as $key => $value);
+----
 
 Implemented in pure PHP. Secondary indexes are implemented as PHP associative arrays -- hash tables with O(1) average lookup time.
 
