@@ -16,10 +16,10 @@ class IterableUtils
      *  PHP >= 7.3:
      *    array_key_last($this->p);
      *
-     * @param Iterator $c
+     * @param iterable $c
      * @return int|string|null
      */
-    public static function lastKey(Iterator $c)
+    public static function lastKey(iterable $c)
     {
         $key = key($c);
         for (reset($c); key($c) !== null; next($c)) {
