@@ -141,7 +141,14 @@ class ArrayWithSecondaryKeys implements ArrayAccess, Countable, Iterator
 
     public function has($keys): bool
     {
-        return ArrUtils::has($this->p, $keys);
+        if (
+            is_array($keys) ||
+            (is_string($keys) && strpos($keys, '.') !== false)
+        ) {
+            return ArrUtils::has($this->p, $keys);
+        } else {
+            return $this->offsetExists($keys);
+        }
     }
 
     public function remove($key)
