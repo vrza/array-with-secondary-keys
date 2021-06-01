@@ -110,8 +110,7 @@ class ArrayWithSecondaryKeys implements ArrayAccess, Countable, Iterator
     public function append($document)
     {
         $this->p[] = $document;
-        // $primaryKey = array_key_last($this->p); // PHP >= 7.3
-        $primaryKey = array_keys($this->p)[count($this->p) - 1];
+        $primaryKey = IterableUtils::lastKey($this->p);
         $this->addNewDocumentToAllIndexes($primaryKey, $document);
     }
 
