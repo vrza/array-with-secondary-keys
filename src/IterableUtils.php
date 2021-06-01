@@ -2,8 +2,6 @@
 
 namespace VladimirVrzic\ArrayWithSecondaryKeys;
 
-use Iterator;
-
 class IterableUtils
 {
     /**
@@ -29,5 +27,23 @@ class IterableUtils
             $key = key($c);
         }
         return $key;
+    }
+
+    /**
+     *  Return an array with all keys of an iterable.
+     *
+     * @param iterable $c
+     * @return int|string|null
+     */
+    public static function keys(iterable $c): array
+    {
+        for (
+            reset($c), $keys = [];
+            key($c) !== null;
+            next($c)
+        ) {
+            $keys[] = key($c);
+        }
+        return $keys;
     }
 }
