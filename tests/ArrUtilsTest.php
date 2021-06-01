@@ -14,6 +14,24 @@ final class ArrUtilsTest extends TestCase
         $this->assertEquals('foo', $a);
     }
 
+    public function testHasNullKey(): void
+    {
+        $a = [
+            22 => 42
+        ];
+        $result = ArrUtils::has($a, null);
+        $this->assertFalse($result);
+    }
+
+    public function testHasKey(): void
+    {
+        $a = [
+            22 => 42
+        ];
+        $result = ArrUtils::has($a, 22);
+        $this->assertTrue($result);
+    }
+
     public function testForget(): void
     {
         $a = [
