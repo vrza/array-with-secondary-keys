@@ -21,8 +21,11 @@ class IterableUtils
      */
     public static function lastKey(iterable $c)
     {
-        $key = key($c);
-        for (reset($c); key($c) !== null; next($c)) {
+        for (
+            reset($c), $key = key($c);
+            key($c) !== null;
+            next($c)
+        ) {
             $key = key($c);
         }
         return $key;
