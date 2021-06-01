@@ -302,7 +302,7 @@ class ArrayWithSecondaryKeys implements ArrayAccess, Countable, Iterator
     }
 
     private function updateAllSecondaryIndexValues($primaryKey, $prevSecondaryValues) {
-        $document = $this->has($primaryKey) ? $this->p[$primaryKey] : null;
+        $document = $this->offsetExists($primaryKey) ? $this->p[$primaryKey] : null;
         foreach (array_keys($this->s) as $index) {
             $prevValue = $prevSecondaryValues[$index];
             $newValue = ArrUtils::get($document, $index);
