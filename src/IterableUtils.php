@@ -10,9 +10,9 @@ class IterableUtils
      *  For an array, this can be done with
      *  built in array functions.
      *  PHP < 7.3:
-     *    array_keys($this->p)[count($this->p) - 1];
+     *    array_keys($array)[count($array) - 1];
      *  PHP >= 7.3:
-     *    array_key_last($this->p);
+     *    array_key_last($array);
      *
      * @param iterable $c
      * @return int|string|null
