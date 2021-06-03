@@ -17,7 +17,7 @@ class IterableUtils
      * @param iterable $c
      * @return int|string|null
      */
-    public static function lastKey(iterable $c)
+    public static function lastKeyThroughIterator(iterable $c)
     {
         for (
             reset($c), $key = key($c);
@@ -35,7 +35,7 @@ class IterableUtils
      * @param iterable $c
      * @return int|string|null
      */
-    public static function keys(iterable $c): array
+    public static function keysThroughIterator(iterable $c): array
     {
         for (
             reset($c), $keys = [];
@@ -45,5 +45,57 @@ class IterableUtils
             $keys[] = key($c);
         }
         return $keys;
+    }
+
+    public static function lastKey(iterable $iterable)
+    {
+        return (is_array($iterable) && function_exists('array_key_last'))
+            ? array_key_last($iterable)
+            : self::iterable_keys_reduce($iterable, function ($acc, $key) {
+                 return $key;
+              });
+    }
+
+    public static function keys(iterable $iterable)
+    {
+        return self::iterable_keys_reduce($iterable, function ($acc, $key) {
+            $acc[] = $key;
+            return $acc;
+        }, []);
+    }
+
+    public static function iterable_keys_reduce(iterable $iterable, $callback, $initial = null)
+    {
+        reset($iterable);
+        $acc = $initial ?? key($iterable);
+        while (($key = key($iterable)) !== null) {
+            $acc = $callback($acc, $key);
+            next($iterable);
+        }
+        return $acc;
+    }
+
+    public static function iterable_values_reduce(iterable $iterable, $callback, $initial = null)
+    {
+        reset($iterable);
+        $acc = $initial ?? current($iterable);
+        while ((key($iterable)) !== null) {
+            $value = current($iterable);
+            $acc = $callback($acc, $value);
+            next($iterable);
+        }
+        return $acc;
+    }
+
+    public static function iterable_reduce(iterable $iterable, $callback, $initial = null)
+    {
+        reset($iterable);
+        $acc = $initial ?? [key($iterable) => current($iterable)];
+        while (($key = key($iterable)) !== null) {
+            $value = current($iterable);
+            $acc = $callback($acc, $key, $value);
+            next($iterable);
+        }
+        return $acc;
     }
 }
