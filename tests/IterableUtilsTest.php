@@ -5,7 +5,7 @@ use VladimirVrzic\ArrayWithSecondaryKeys\IterableUtils;
 
 final class IterableUtilsTest extends TestCase
 {
-    public function testLastKey(): void
+    public function testLastKeyOnArray(): void
     {
         $a = [];
         $a[] = 'foo';
@@ -22,27 +22,16 @@ final class IterableUtilsTest extends TestCase
         $this->assertEquals([0, 1, 2], $keys);
     }
 
-    public function testLastKeyThroughIterator(): void
-    {
-        $a = [];
-        $a[] = 'foo';
-        $a[] = 'bar';
-        $a[] = 'baz';
-        $last = IterableUtils::lastKeyThroughIterator($a);
-        $this->assertEquals(2, $last);
-    }
-
-    public function testKeysThroughIterator(): void
+    public function testValues(): void
     {
         $a = ['foo', 'bar', 'baz'];
-        $keys = IterableUtils::keysThroughIterator($a);
-        $this->assertEquals([0, 1, 2], $keys);
+        $values = IterableUtils::values($a);
+        $this->assertEquals(['foo', 'bar', 'baz'], $values);
     }
 
     public function testIterableValuesReduce(): void
     {
         $a = [1, 2, 3];
-        echo "in test\n";
         $sum = IterableUtils::iterable_values_reduce($a, function($acc, $x) {
            return $acc + $x;
         }, 0);
