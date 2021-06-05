@@ -83,7 +83,6 @@ class ArrayWithSecondaryKeys implements ArrayAccess, Countable, Iterator
     // Iterator interface
     public function rewind() {
         $this->iterator->rewind();
-        return reset($this->p);
     }
 
     public function current() {
@@ -97,7 +96,6 @@ class ArrayWithSecondaryKeys implements ArrayAccess, Countable, Iterator
 
     public function next() {
         $this->iterator->next();
-        return next($this->p);
     }
 
     public function valid(): bool {
