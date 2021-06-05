@@ -31,7 +31,6 @@ class ModificationDuringIterationTest extends TestCase
          *               (5, 1) (5, 3) (5, 4) (5, 5)
          * our output:   (1, 1) (1, 2) (1, 3) (1, 4) (1, 5)
          */
-        echo $verificationSet;
         $this->assertCount(4, $a);
         $this->assertCount(5, $verificationSet);
         $this->assertTrue($verificationSet->has([1, 1]));
