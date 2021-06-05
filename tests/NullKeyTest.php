@@ -1,7 +1,7 @@
 <?php
 
 use PHPUnit\Framework\TestCase;
-use VladimirVrzic\ArrayWithSecondaryKeys\ArrayWithSecondaryKeys;
+use CardinalCollections\ArrayWithSecondaryKeys\ArrayWithSecondaryKeys;
 
 final class NullKeyTest extends TestCase
 {

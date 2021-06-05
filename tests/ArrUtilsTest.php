@@ -1,7 +1,7 @@
 <?php
 
 use PHPUnit\Framework\TestCase;
-use VladimirVrzic\ArrayWithSecondaryKeys\ArrUtils;
+use CardinalCollections\ArrayWithSecondaryKeys\ArrUtils;
 
 final class ArrUtilsTest extends TestCase
 {

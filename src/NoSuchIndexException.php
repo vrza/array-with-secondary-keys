@@ -1,6 +1,6 @@
 <?php
 
-namespace VladimirVrzic\ArrayWithSecondaryKeys;
+namespace CardinalCollections\ArrayWithSecondaryKeys;
 
 use Exception;
 

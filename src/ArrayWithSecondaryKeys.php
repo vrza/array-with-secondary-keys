@@ -1,11 +1,13 @@
 <?php
 
-namespace VladimirVrzic\ArrayWithSecondaryKeys;
+namespace CardinalCollections\ArrayWithSecondaryKeys;
 
 use ArrayAccess;
 use Countable;
 use InvalidArgumentException;
 use Iterator;
+
+use CardinalCollections\IterableUtils;
 
 class ArrayWithSecondaryKeys implements ArrayAccess, Countable, Iterator
 {

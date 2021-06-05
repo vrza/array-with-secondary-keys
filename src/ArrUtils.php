@@ -1,6 +1,6 @@
 <?php
 
-namespace VladimirVrzic\ArrayWithSecondaryKeys;
+namespace CardinalCollections\ArrayWithSecondaryKeys;
 
 /*
  * Contains code adapted from Laravel array utilities:

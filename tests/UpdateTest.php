@@ -1,8 +1,8 @@
 <?php
 
 use PHPUnit\Framework\TestCase;
-use VladimirVrzic\ArrayWithSecondaryKeys\ArrayWithSecondaryKeys;
-use VladimirVrzic\ArrayWithSecondaryKeys\NoSuchIndexException;
+use CardinalCollections\ArrayWithSecondaryKeys\ArrayWithSecondaryKeys;
+use CardinalCollections\ArrayWithSecondaryKeys\NoSuchIndexException;
 
 final class UpdateTest extends TestCase
 {
