@@ -8,17 +8,24 @@ use InvalidArgumentException;
 use Iterator;
 
 use CardinalCollections\IterableUtils;
+use CardinalCollections\Iterators\IteratorFactory;
 
 class ArrayWithSecondaryKeys implements ArrayAccess, Countable, Iterator
 {
     // primary map
-    private $p;
+    private $p = [];
     // secondary indexes
     private $s = [];
+    // iterator
+    private $iterator;
 
     public function __construct(array $array = [])
     {
-        $this->p = $array;
+        $iteratorClass = 'PredefinedKeyPositionIterator';
+        $this->iterator = IteratorFactory::create($iteratorClass);
+        foreach ($array as $key => $value) {
+            $this->offsetSet($key, $value);
+        }
     }
 
     // ArrayAccess interface
@@ -26,16 +33,17 @@ class ArrayWithSecondaryKeys implements ArrayAccess, Countable, Iterator
     {
         if (is_null($offset)) {
             return $this->append($value);
-        } else {
-            if (!ArrUtils::isValidArrayKey($offset)) {
-                $type = gettype($offset);
-                throw new InvalidArgumentException("Offset cannot be $type, allowed types are string or integer");
-            }
-
-            $prevSecondaryValues = $this->getAllSecondaryIndexValues($offset);
-            $this->p[$offset] = $value;
-            $this->updateAllSecondaryIndexValues($offset, $prevSecondaryValues);
         }
+
+        if (!ArrUtils::isValidArrayKey($offset)) {
+            $type = gettype($offset);
+            throw new InvalidArgumentException("Offset cannot be $type, allowed types are string or integer");
+        }
+
+        $prevSecondaryValues = $this->getAllSecondaryIndexValues($offset);
+        $this->p[$offset] = $value;
+        $this->iterator->addIfAbsent($offset);
+        $this->updateAllSecondaryIndexValues($offset, $prevSecondaryValues);
     }
 
     public function offsetExists($offset): bool
@@ -55,6 +63,7 @@ class ArrayWithSecondaryKeys implements ArrayAccess, Countable, Iterator
 
         $prevSecondaryValues = $this->getAllSecondaryIndexValues($offset);
         unset($this->p[$offset]);
+        $this->iterator->remove($offset);
         $this->updateAllSecondaryIndexValues($offset, $prevSecondaryValues);
     }
 
@@ -73,23 +82,26 @@ class ArrayWithSecondaryKeys implements ArrayAccess, Countable, Iterator
 
     // Iterator interface
     public function rewind() {
+        $this->iterator->rewind();
         return reset($this->p);
     }
 
     public function current() {
-        return current($this->p);
+        $key = $this->iterator->key();
+        return $this->p[$key];
     }
 
     public function key() {
-        return key($this->p);
+        return $this->iterator->key();
     }
 
     public function next() {
+        $this->iterator->next();
         return next($this->p);
     }
 
     public function valid(): bool {
-        return key($this->p) !== null;
+        return $this->iterator->valid();
     }
 
     // Countable interface
@@ -113,6 +125,7 @@ class ArrayWithSecondaryKeys implements ArrayAccess, Countable, Iterator
     {
         $this->p[] = $document;
         $primaryKey = IterableUtils::lastKey($this->p);
+        $this->iterator->addIfAbsent($primaryKey);
         $this->addNewDocumentToAllIndexes($primaryKey, $document);
     }
 
