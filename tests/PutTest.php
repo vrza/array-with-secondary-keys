@@ -35,5 +35,4 @@ class PutTest extends TestCase
             $existing['name']
         );
     }
-
 }

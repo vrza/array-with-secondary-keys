@@ -87,7 +87,7 @@ class ArrayWithSecondaryKeys implements ArrayAccess, Countable, Iterator
 
     public function current() {
         $key = $this->iterator->key();
-        return $this->p[$key];
+        return $key === null ? null : $this->p[$key];
     }
 
     public function key() {
@@ -144,6 +144,7 @@ class ArrayWithSecondaryKeys implements ArrayAccess, Countable, Iterator
             $this->p[$key] = $document;
         }
 
+        $this->iterator->addIfAbsent($primaryKey);
         $this->updateAllSecondaryIndexValues($primaryKey, $prevSecondaryValues);
     }
 
@@ -260,7 +261,7 @@ class ArrayWithSecondaryKeys implements ArrayAccess, Countable, Iterator
         }
 
         $existing = ArrUtils::get($this->p, $key);
-        if (is_null($existing)) {
+        if ($existing === null) {
             $this->put($key, $document);
             return null;
         } else {

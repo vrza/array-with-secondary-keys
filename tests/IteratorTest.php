@@ -5,7 +5,7 @@ use CardinalCollections\ArrayWithSecondaryKeys\ArrayWithSecondaryKeys;
 
 class IteratorTest extends TestCase
 {
-    public function testIterator(): void
+    public function testIteratorStringKeys(): void
     {
         $initialArray = [
             'pera' => [
@@ -28,7 +28,54 @@ class IteratorTest extends TestCase
             $keys .= $key;
             $names .= $value['name'];
         }
-        $this->assertEquals($keys, 'peramikalazo');
-        $this->assertEquals($names, 'PeraMikaLazo');
+        $this->assertEquals('peramikalazo', $keys);
+        $this->assertEquals('PeraMikaLazo', $names);
+    }
+
+    public function testIteratorNumericKeys(): void
+    {
+        $initialArray = [
+            22 => [
+                'name' => 'Pera',
+                'email' => 'pera@ddr.ex'
+            ],
+            32 => [
+                'name' => 'Mika',
+                'email' => 'mika@frg.ex'
+            ],
+            42 => [
+                'name' => 'Lazo',
+                'email' => 'lazo@sfrj.ex'
+            ]
+        ];
+        $a = new ArrayWithSecondaryKeys($initialArray);
+        $keys = 0;
+        $names = '';
+        foreach ($a as $key => $value) {
+            $keys += $key;
+            $names .= $value['name'];
+        }
+        $this->assertEquals(96, $keys);
+        $this->assertEquals('PeraMikaLazo', $names);
+    }
+
+    public function testIteratorStringKeysPutDot(): void
+    {
+        $initialArray = [
+            'pera' => [
+                'name' => 'Pera'
+            ]
+        ];
+        $a = new ArrayWithSecondaryKeys($initialArray);
+        $a->put('mika.name', 'Mika');
+        $a->put('lazo.name', 'Lazo');
+        $keys = '';
+        $names = '';
+        foreach ($a as $key => $value) {
+            $keys .= $key;
+            $names .= $value['name'];
+        }
+        $this->assertEquals('peramikalazo', $keys);
+        $this->assertEquals('PeraMikaLazo', $names);
     }
 }
