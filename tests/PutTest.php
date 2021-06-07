@@ -1,7 +1,7 @@
 <?php
 
 use PHPUnit\Framework\TestCase;
-use VladimirVrzic\ArrayWithSecondaryKeys\ArrayWithSecondaryKeys;
+use CardinalCollections\ArrayWithSecondaryKeys\ArrayWithSecondaryKeys;
 
 class PutTest extends TestCase
 {
@@ -35,5 +35,4 @@ class PutTest extends TestCase
             $existing['name']
         );
     }
-
 }
