@@ -204,7 +204,7 @@ Add the following to your `composer.json`:
         {
             "type": "vcs",
             "url": "https://github.com/vrza/array-with-secondary-keys"
-         }
+        }
     ],
     "require": {
         "vrza/array-with-secondary-keys": "dev-main"
