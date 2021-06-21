@@ -19,10 +19,10 @@ class ArrayWithSecondaryKeys implements ArrayAccess, Countable, Iterator
     // iterator
     private $iterator;
 
-    public function __construct(array $array = [], $iteratorClass = null)
+    public function __construct(iterable $map = [], $iteratorClass = null)
     {
         $this->iterator = IteratorFactory::create($iteratorClass);
-        foreach ($array as $key => $value) {
+        foreach ($map as $key => $value) {
             $this->offsetSet($key, $value);
         }
     }
