@@ -28,10 +28,11 @@ class ArrayWithSecondaryKeys implements ArrayAccess, Countable, Iterator
     }
 
     // ArrayAccess interface
-    public function offsetSet($offset, $value)
+    public function offsetSet($offset, $value): void
     {
         if (is_null($offset)) {
-            return $this->append($value);
+            $this->append($value);
+            return;
         }
 
         if (!ArrUtils::isValidArrayKey($offset)) {
@@ -50,7 +51,7 @@ class ArrayWithSecondaryKeys implements ArrayAccess, Countable, Iterator
         return isset($this->p[$offset]);
     }
 
-    public function offsetUnset($offset)
+    public function offsetUnset($offset): void
     {
         if (is_null($offset)) {
             return;
@@ -107,7 +108,7 @@ class ArrayWithSecondaryKeys implements ArrayAccess, Countable, Iterator
         return count($this->p);
     }
 
-    public function dump()
+    public function dump(): void
     {
         var_dump($this->p);
         var_dump($this->s);
@@ -118,15 +119,16 @@ class ArrayWithSecondaryKeys implements ArrayAccess, Countable, Iterator
         return empty($this->p);
     }
 
-    public function append($document)
+    public function append($document): ArrayWithSecondaryKeys
     {
         $this->p[] = $document;
         $primaryKey = IterableUtils::lastKey($this->p);
         $this->iterator->addIfAbsent($primaryKey);
         $this->addNewDocumentToAllIndexes($primaryKey, $document);
+        return $this;
     }
 
-    public function put($key, $document)
+    public function put($key, $document): ArrayWithSecondaryKeys
     {
         if (!ArrUtils::isValidArrayKey($key)) {
             $type = gettype($key);
@@ -145,6 +147,8 @@ class ArrayWithSecondaryKeys implements ArrayAccess, Countable, Iterator
 
         $this->iterator->addIfAbsent($primaryKey);
         $this->updateAllSecondaryIndexValues($primaryKey, $prevSecondaryValues);
+
+        return $this;
     }
 
     public function get($key, $default = null)
@@ -164,7 +168,7 @@ class ArrayWithSecondaryKeys implements ArrayAccess, Countable, Iterator
         }
     }
 
-    public function remove($key)
+    public function remove($key): ArrayWithSecondaryKeys
     {
         if (!ArrUtils::isValidArrayKey($key)) {
             $type = gettype($key);
@@ -172,7 +176,7 @@ class ArrayWithSecondaryKeys implements ArrayAccess, Countable, Iterator
         }
 
         if (!$this->has($key)) {
-            return;
+            return $this;
         }
 
         $primaryKey = is_string($key) ? explode('.', $key)[0] : $key;
@@ -186,6 +190,8 @@ class ArrayWithSecondaryKeys implements ArrayAccess, Countable, Iterator
         }
 
         $this->updateAllSecondaryIndexValues($primaryKey, $prevSecondaryValues);
+
+        return $this;
     }
 
     public function containsPrimaryKey($primaryKey): bool
@@ -286,7 +292,7 @@ class ArrayWithSecondaryKeys implements ArrayAccess, Countable, Iterator
         return array_keys($this->s[$index]);
     }
 
-    public function createIndex($index)
+    public function createIndex($index): void
     {
         if (array_key_exists($index, $this->s)) {
             return;
@@ -297,7 +303,7 @@ class ArrayWithSecondaryKeys implements ArrayAccess, Countable, Iterator
         }
     }
 
-    private function addNewDocumentToIndex($index, $primaryKey, $document)
+    private function addNewDocumentToIndex($index, $primaryKey, $document): void
     {
         $secondaryKey = ArrUtils::get($document, $index);
         if (ArrUtils::isValidArrayKey($secondaryKey)) {
@@ -305,14 +311,15 @@ class ArrayWithSecondaryKeys implements ArrayAccess, Countable, Iterator
         }
     }
 
-    private function addNewDocumentToAllIndexes($primaryKey, $document)
+    private function addNewDocumentToAllIndexes($primaryKey, $document): void
     {
         foreach (array_keys($this->s) as $index) {
             $this->addNewDocumentToIndex($index, $primaryKey, $document);
         }
     }
 
-    private function getAllSecondaryIndexValues($primaryKey): array {
+    private function getAllSecondaryIndexValues($primaryKey): array
+    {
         $document = $this->p[$primaryKey] ?? null;
         $prevSecondaryValues = [];
         foreach (array_keys($this->s) as $index) {
@@ -321,7 +328,8 @@ class ArrayWithSecondaryKeys implements ArrayAccess, Countable, Iterator
         return $prevSecondaryValues;
     }
 
-    private function updateAllSecondaryIndexValues($primaryKey, $prevSecondaryValues) {
+    private function updateAllSecondaryIndexValues($primaryKey, $prevSecondaryValues): void
+    {
         $document = $this->offsetExists($primaryKey) ? $this->p[$primaryKey] : null;
         foreach (array_keys($this->s) as $index) {
             $prevValue = $prevSecondaryValues[$index];
@@ -330,7 +338,8 @@ class ArrayWithSecondaryKeys implements ArrayAccess, Countable, Iterator
         }
     }
 
-    private function updateSecondaryIndexValue($index, $primaryKey, $prevValue, $newValue) {
+    private function updateSecondaryIndexValue($index, $primaryKey, $prevValue, $newValue): void
+    {
         if ($prevValue != $newValue) {
             if (is_null($newValue)) {
                 unset($this->s[$index][$prevValue]);
