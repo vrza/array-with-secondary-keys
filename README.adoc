@@ -21,6 +21,8 @@ foreach ($a as $key => $value);
 
 Implemented in pure PHP. Secondary indexes are implemented as PHP associative arrays -- hash tables with O(1) average lookup time.
 
+Since the secondary index is a hash index, its keys are by design unique. While it is possible to have the same secondary key value in multiple documents in the collection, in such cases the secondary key will get overwritten and will point to the last added/modified document.
+
 == API Reference
 
 A "document" is the value associated to a primary key. It can be of any type. If the document is an array, secondary indexes can be specified using the "dot" notation.
