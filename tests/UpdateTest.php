@@ -90,4 +90,35 @@ final class UpdateTest extends TestCase
             $a->get('22.name')
         );
     }
+
+    public function testUpdateByIndexUpdatesAllSecondaryKeys(): void
+    {
+        $a = new ArrayWithSecondaryKeys();
+        $a->put(
+            22,
+            [
+                'name' => 'twenty-two',
+                'state' => [
+                    'pid' => 12345
+                ],
+                'fk' => 2022
+            ]
+        );
+        $index = 'state.pid';
+        $a->createIndex($index);
+        $index2 = 'fk';
+        $a->createIndex($index2);
+        $a->updateByIndex(
+            $index,
+            12345,
+            [
+                'name' => 'twenty-three',
+                'state' => [
+                    'pid' => 12345
+                ],
+                'fk' => 2023
+            ]
+        );
+        $this->assertEquals('twenty-three', $a->getByIndex('fk', 2023)['name']);
+    }
 }

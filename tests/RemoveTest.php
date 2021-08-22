@@ -107,4 +107,46 @@ final class RemoveTest extends TestCase
             $a->asArray()[2]
         );
     }
+
+    public function testIterationAfterRemoval(): void
+    {
+        $a = new ArrayWithSecondaryKeys([ 22 => [22], 42 => [42], 33 => [33] ]);
+        $a->remove(42);
+        foreach ($a as $key => $_value) {
+            $this->assertNotEquals($key, 42);
+        }
+    }
+
+    public function testIterationAfterRemovalByIndex(): void
+    {
+        $a = new ArrayWithSecondaryKeys([
+             22 => [
+                 'name' => 'twenty-two',
+                 'state' => [
+                     'pid' => 12345,
+                     'db' => 'UPDATED'
+                 ]
+            ],
+            42 => [
+                 'name' => 'forty-two',
+                 'state' => [
+                     'pid' => 12346,
+                     'db' => 'REMOVED'
+                 ]
+            ],
+            33 => [
+                'name' => 'thirty-three',
+                'state' => [
+                    'pid' => 12347,
+                    'db' => 'UNCHANGED'
+                ]
+            ]
+        ]);
+        $index = 'state.pid';
+        $a->createIndex($index);
+        $a->removeByIndex($index, 12346);
+        foreach ($a as $key => $_value) {
+            $this->assertNotEquals($key, 42);
+        }
+    }
 }

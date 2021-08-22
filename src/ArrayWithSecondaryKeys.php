@@ -183,10 +183,10 @@ class ArrayWithSecondaryKeys implements ArrayAccess, Countable, Iterator
 
         $prevSecondaryValues = $this->getAllSecondaryIndexValues($primaryKey);
 
-        if (is_string($key)) {
-            ArrUtils::forget($this->p, $key);
+        if ($key === $primaryKey) {
+            $this->offsetUnset($key);
         } else {
-            unset($this->p[$key]);
+            ArrUtils::forget($this->p, $key);
         }
 
         $this->updateAllSecondaryIndexValues($primaryKey, $prevSecondaryValues);
@@ -228,7 +228,7 @@ class ArrayWithSecondaryKeys implements ArrayAccess, Countable, Iterator
     {
         $primaryKey = $this->getPrimaryKeyByIndex($index, $secondaryKey);
         if (ArrUtils::isValidArrayKey($primaryKey)) {
-            $this->p[$primaryKey] = $document;
+            $this->offsetSet($primaryKey, $document);
             return true;
         } else {
             return false;
@@ -239,7 +239,7 @@ class ArrayWithSecondaryKeys implements ArrayAccess, Countable, Iterator
     {
         $primaryKey = $this->getPrimaryKeyByIndex($index, $secondaryKey);
         if (ArrUtils::isValidArrayKey($primaryKey)) {
-            unset($this->p[$primaryKey]);
+            $this->offsetUnset($primaryKey);
             return true;
         } else {
             return false;
