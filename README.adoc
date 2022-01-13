@@ -84,7 +84,7 @@ Returns `true` if there are no primary keys in the collection, `false` otherwise
 === put
 [source,php]
 ----
-put($key, $document)
+put($key, $document): ArrayWithSecondaryKeys
 ----
 Adds a new document to the collection under the given key.
 
@@ -92,10 +92,17 @@ If the key is given in "dot" notation, and the top level primary key exists, a n
 
 If the key is not a string that includes a dot, it is treated as a primary key.
 
+=== add
+[source,php]
+----
+add($key, $document): ArrayWithSecondaryKeys
+----
+An alias for `put`.
+
 === remove
 [source,php]
 ----
-remove($key)
+remove($key): ArrayWithSecondaryKeys
 ----
 Removes the document associated with the given primary key, or removes a nested part of the document if key is given in "dot" notation.
 
@@ -113,7 +120,7 @@ Returns the primary key of the updated document, or `null` if a document with ex
 === append
 [source,php]
 ----
-append($document)
+append($document): ArrayWithSecondaryKeys
 ----
 Appends a document (using `[]=`).
 
