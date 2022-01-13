@@ -7,11 +7,14 @@ use Countable;
 use InvalidArgumentException;
 use Iterator;
 
+use CardinalCollections\HigherOrderMethods;
 use CardinalCollections\IterableUtils;
 use CardinalCollections\Iterators\IteratorFactory;
 
 class ArrayWithSecondaryKeys implements ArrayAccess, Countable, Iterator
 {
+    use HigherOrderMethods;
+
     // primary map
     private $p = [];
     // secondary indexes
@@ -149,6 +152,11 @@ class ArrayWithSecondaryKeys implements ArrayAccess, Countable, Iterator
         $this->updateAllSecondaryIndexValues($primaryKey, $prevSecondaryValues);
 
         return $this;
+    }
+
+    public function add($key, $document): ArrayWithSecondaryKeys
+    {
+        return $this->put($key, $document);
     }
 
     public function get($key, $default = null)
