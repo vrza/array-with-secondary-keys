@@ -70,6 +70,7 @@ class ArrayWithSecondaryKeys implements ArrayAccess, Countable, Iterator
         $this->updateAllSecondaryIndexValues($offset, $prevSecondaryValues);
     }
 
+    #[\ReturnTypeWillChange]
     public function offsetGet($offset)
     {
         if (is_null($offset)) {
@@ -84,24 +85,31 @@ class ArrayWithSecondaryKeys implements ArrayAccess, Countable, Iterator
     }
 
     // Iterator interface
-    public function rewind() {
+    public function rewind(): void
+    {
         $this->iterator->rewind();
     }
 
-    public function current() {
+    #[\ReturnTypeWillChange]
+    public function current()
+    {
         $key = $this->iterator->key();
         return $key === null ? null : $this->p[$key];
     }
 
-    public function key() {
+    #[\ReturnTypeWillChange]
+    public function key()
+    {
         return $this->iterator->key();
     }
 
-    public function next() {
+    public function next(): void
+    {
         $this->iterator->next();
     }
 
-    public function valid(): bool {
+    public function valid(): bool
+    {
         return $this->iterator->valid();
     }
 
