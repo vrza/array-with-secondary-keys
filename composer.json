@@ -17,7 +17,7 @@
     ],
     "require": {
         "php": ">=7.1",
-        "vrza/cardinal-collections": "dev-main"
+        "cardinal-collections/cardinal-collections": "dev-main"
     },
     "require-dev": {
         "phpunit/phpunit": ">=7.0 <10.0"
