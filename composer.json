@@ -1,5 +1,5 @@
 {
-    "name": "vrza/array-with-secondary-keys",
+    "name": "cardinal-collections/array-with-secondary-keys",
     "description": "Array with Secondary Indexes",
     "type": "library",
     "license": "MIT",
