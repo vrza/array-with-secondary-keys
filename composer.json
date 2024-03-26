@@ -9,15 +9,9 @@
             "email": "vvrzic@gmail.com"
         }
     ],
-    "repositories": [
-        {
-            "type": "vcs",
-            "url": "https://github.com/vrza/cardinal-collections"
-         }
-    ],
     "require": {
         "php": ">=7.1",
-        "cardinal-collections/cardinal-collections": "dev-main"
+        "cardinal-collections/cardinal-collections": "^1.0.0"
     },
     "require-dev": {
         "phpunit/phpunit": ">=7.0 <10.0"
