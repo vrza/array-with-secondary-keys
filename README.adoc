@@ -203,21 +203,13 @@ secondaryKeys($index): array
 ----
 Returns an array of all secondary keys associated with the given index.
 
-== Setup
+== Installation
 
-Add the following to your `composer.json`:
+Assuming you have PHP Composer installed, and that the `composer` executable is in your `$PATH`:
 
-[source,json]
+[source,shell]
 ----
-    "repositories": [
-        {
-            "type": "vcs",
-            "url": "https://github.com/vrza/array-with-secondary-keys"
-        }
-    ],
-    "require": {
-        "vrza/array-with-secondary-keys": "dev-main"
-    }
+composer require cardinal-collections/array-with-secondary-keys
 ----
 
 == Name ideas
